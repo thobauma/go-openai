@@ -46,10 +46,11 @@ type AudioRequest struct {
 
 // AudioResponse represents a response structure for audio API.
 type AudioResponse struct {
-	Task     string  `json:"task"`
-	Language string  `json:"language"`
-	Duration float64 `json:"duration"`
-	Segments []struct {
+	Task                string  `json:"task"`
+	LanguageProbability float64 `json:"language_probability"`
+	Language            string  `json:"language"`
+	Duration            float64 `json:"duration"`
+	Segments            []struct {
 		ID               int     `json:"id"`
 		Seek             int     `json:"seek"`
 		Start            float64 `json:"start"`
@@ -62,7 +63,14 @@ type AudioResponse struct {
 		NoSpeechProb     float64 `json:"no_speech_prob"`
 		Transient        bool    `json:"transient"`
 	} `json:"segments"`
-	Text string `json:"text"`
+	WordTimestamps []struct {
+		Word        string  `json:"word"`
+		Probability float64 `json:"probability"`
+		Start       float32 `json:"start"`
+		End         float32 `json:"end"`
+	} `json:"word_timestamps"`
+	Text    string  `json:"text"`
+	Runtime float64 `json:"runtime"`
 
 	httpHeader
 }
