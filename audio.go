@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strings"
 
 	utils "github.com/sashabaranov/go-openai/internal"
 )
@@ -38,10 +39,11 @@ type AudioRequest struct {
 	// Reader is an optional io.Reader when you do not want to use an existing file.
 	Reader io.Reader
 
-	Prompt      string // For translation, it should be in English
-	Temperature float32
-	Language    string // For translation, just do not use it. It seems "en" works, not confirmed...
-	Format      AudioResponseFormat
+	Prompt             string // For translation, it should be in English
+	Temperature        float32
+	Language           string // For translation, just do not use it. It seems "en" works, not confirmed...
+	SupportedLanguages []string
+	Format             AudioResponseFormat
 }
 
 // AudioResponse represents a response structure for audio API.
@@ -69,8 +71,12 @@ type AudioResponse struct {
 		Start       float32 `json:"start"`
 		End         float32 `json:"end"`
 	} `json:"word_timestamps"`
-	Text    string  `json:"text"`
-	Runtime float64 `json:"runtime"`
+	Text                                 string  `json:"text"`
+	Runtime                              float64 `json:"runtime"`
+	DetectedLanguage                     string  `json:"detected_language,omitempty"`
+	DetectedLanguageProbability          float64 `json:"detected_language_probability,omitempty"`
+	SupportedDetectedLanguage            string  `json:"supported_detected_language,omitempty"`
+	SupportedDetectedLanguageProbability float64 `json:"supported_detected_language_probability,omitempty"`
 
 	httpHeader
 }
@@ -184,6 +190,14 @@ func audioMultipartForm(request AudioRequest, b utils.FormBuilder) error {
 		err = b.WriteField("language", request.Language)
 		if err != nil {
 			return fmt.Errorf("writing language: %w", err)
+		}
+	}
+
+	// Create a form field for the supported languages (if provided)
+	if len(request.SupportedLanguages) > 0 {
+		err = b.WriteField("supported_languages", strings.Join(request.SupportedLanguages, ","))
+		if err != nil {
+			return fmt.Errorf("writing supported languages: %w", err)
 		}
 	}
 
