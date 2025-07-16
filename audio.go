@@ -71,12 +71,12 @@ type AudioResponse struct {
 		Start       float32 `json:"start"`
 		End         float32 `json:"end"`
 	} `json:"word_timestamps"`
-	Text                                 string  `json:"text"`
-	Runtime                              float64 `json:"runtime"`
-	DetectedLanguage                     string  `json:"detected_language,omitempty"`
-	DetectedLanguageProbability          float64 `json:"detected_language_probability,omitempty"`
-	SupportedDetectedLanguage            string  `json:"supported_detected_language,omitempty"`
-	SupportedDetectedLanguageProbability float64 `json:"supported_detected_language_probability,omitempty"`
+	Text                                 string   `json:"text"`
+	Runtime                              float64  `json:"runtime"`
+	DetectedLanguage                     *string  `json:"detected_language,omitempty"`
+	DetectedLanguageProbability          *float64 `json:"detected_language_probability,omitempty"`
+	SupportedDetectedLanguage            *string  `json:"supported_detected_language,omitempty"`
+	SupportedDetectedLanguageProbability *float64 `json:"supported_detected_language_probability,omitempty"`
 
 	httpHeader
 }
