@@ -75,8 +75,8 @@ type AudioResponse struct {
 	Runtime                              float64  `json:"runtime"`
 	DetectedLanguage                     *string  `json:"detected_language,omitempty"`
 	DetectedLanguageProbability          *float64 `json:"detected_language_probability,omitempty"`
-	SupportedDetectedLanguage            *string  `json:"supported_detected_language,omitempty"`
-	SupportedDetectedLanguageProbability *float64 `json:"supported_detected_language_probability,omitempty"`
+	DetectedSupportedLanguage            *string  `json:"detected_supported_language,omitempty"`
+	DetectedSupportedLanguageProbability *float64 `json:"detected_supported_language_probability,omitempty"`
 
 	httpHeader
 }
